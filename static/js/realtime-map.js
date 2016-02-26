@@ -39,5 +39,3 @@ var rtmap = {
         }, random_time);
     }
 }
-
-rtmap.autoGenerate()

@@ -26,14 +26,19 @@ io.on('connection', (socket) => {
 // Set Express routes.
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
+  
+  // Disable this and add your real traffic
+  autoGenerate();
 });
 
-app.post('/events', (req, res) => {
-  let to = req.body.To;
-  let fromNumber = req.body.From;
-  let callStatus = req.body.CallStatus;
-  let callSid = req.body.CallSid;
+function autoGenerate() {
+   var random_time = Math.random() * 1000;
+   setTimeout(function () {
+    sendTraffic((Math.random() * 360) - 180, (Math.random() * 180) - 90)
+        autoGenerate();
+   }, random_time);
+}
 
-  console.log(to, fromNumber, callStatus, callSid);
-  res.send('Event received');
-});
+function sendTraffic(lng, lat) {
+        io.emit("event", {lng: lng, lat: lat})
+}
