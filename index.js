@@ -4,9 +4,9 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-// Run server to listen on port 3000.
-const server = app.listen(3000, () => {
-  console.log('listening on *:3000');
+// Run server to listen on port 3005.
+const server = app.listen(3005, () => {
+  console.log('listening on *:3005');
 });
 
 const io = require('socket.io')(server);
