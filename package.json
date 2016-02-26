@@ -1,0 +1,30 @@
+{
+  "name": "realtime-traffic-map",
+  "version": "0.5.0",
+  "description": "Showcase realtime traffic of your services",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "socket.io": "^1.4.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaiddabaeen/realtime-traffic-map.git"
+  },
+  "keywords": [
+    "realtime",
+    "traffic",
+    "map"
+  ],
+  "author": "Zaid Daba'een",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zaiddabaeen/realtime-traffic-map/issues"
+  },
+  "homepage": "https://github.com/zaiddabaeen/realtime-traffic-map#readme"
+}
