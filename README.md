@@ -10,6 +10,7 @@ Live demo: [realtime.z-proj.com](http://realtime.z-proj.com)
 #Techstack
 
 - node.js
+- Redis Pub/Sub
 - express
 - socket.io
 - amcharts
