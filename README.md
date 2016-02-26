@@ -5,7 +5,7 @@
 
 Showcase your realtime traffic on an AmCharts map.
 
-Live demo: [realtime.z-proj.com](realtime.z-proj.com)
+Live demo: [realtime.z-proj.com](http://realtime.z-proj.com)
 
 #Techstack
 
