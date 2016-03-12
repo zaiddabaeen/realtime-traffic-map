@@ -6,33 +6,63 @@ const app = express();
 
 // Run server to listen on port 3005.
 const server = app.listen(3005, () => {
-  console.log('Listening on http://localhost:3005');
+    console.log('Listening on http://localhost:3005');
 });
+
+const kafka = require('kafka-node'),
+    client = new kafka.Client('127.0.0.1:2181'),
+    producer = new kafka.Producer(client,{ requireAcks: 1 });
 
 const redisAdapter = require('socket.io-redis');
 const io = require('socket.io')(server);
 
 io.adapter(redisAdapter({ host: 'localhost', port: 6379, scope:'realtime' }));
- 
+
 app.use(bodyParser.urlencoded({ extended: false } ));
 app.use(express.static('static'));
 
 // Set Express routes.
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/index.html');
+    res.sendFile(__dirname + '/views/index.html');
 });
 
+
 function autoGenerate() {
-   var random_time = Math.random() * 1000;
-   setTimeout(function () {
-    sendTraffic((Math.random() * 360) - 180, (Math.random() * 180) - 90)
+    var random_time = Math.random() * 1000;
+    setTimeout(function () {
+        sendTraffic((Math.random() * 360) - 180, (Math.random() * 180) - 90)
         autoGenerate();
-   }, random_time);
+    }, random_time);
+}
+
+function recieveTraffic(){
+
+    var consumer = new kafka.Consumer(client,[{ topic: 'maptraffic', partition: 0 }], {autoCommit: true})
+
+    consumer.on('message', function (message) {
+        io.emit("event", JSON.parse(message.value));
+    });
+
 }
 
 function sendTraffic(lng, lat) {
-//        io.emit("event", {lng: lng, lat: lat})
-    io.emit("event", {lng: lng, lat: lat});
+
+    var event =  JSON.stringify({lng: lng, lat: lat});
+
+    producer.send([
+        { topic: 'maptraffic', messages: [event] }
+    ], function (err, result) {
+        if (err){
+            console.log(err)
+        }
+    });
 }
 
-autoGenerate();
+producer.on('ready', function () {
+    // Create topics sync
+    producer.createTopics(['maptraffic'], false, function (err, data) {
+        console.log(data);
+        recieveTraffic();
+        autoGenerate();
+    });
+});
