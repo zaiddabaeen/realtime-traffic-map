@@ -37,7 +37,16 @@ function autoGenerate() {
 
 function recieveTraffic(){
 
-    var consumer = new kafka.Consumer(client,[{ topic: 'maptraffic', partition: 0 }], {autoCommit: true})
+    var consumer = new kafka.Consumer(client,[{ topic: 'maptraffic', partition: 0 }], {autoCommit: false})
+    var offset = new kafka.Offset(client);;
+
+    consumer.on('offsetOutOfRange', function (topic) {
+        topic.maxNum = 2;
+        offset.fetch([topic], function (err, offsets) {
+            var min = Math.min.apply(null, offsets[topic.topic][topic.partition]);
+            consumer.setOffset(topic.topic, topic.partition, min);
+        });
+    });
 
     consumer.on('message', function (message) {
         io.emit("event", JSON.parse(message.value));
