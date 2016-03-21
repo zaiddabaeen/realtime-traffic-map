@@ -16,7 +16,6 @@ sudo apt-get install default-jre
 # If ZooKeeper is not installed
 sudo apt-get install zookeeperd
 
-sudo npm i -g kafka-node
 ./kafka/start.sh
 npm start
 ```
